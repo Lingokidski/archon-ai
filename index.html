@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A.R.C.H.O.N. | AI System</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #070910;
+      color: #e8ecff;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    header {
+      padding: 22px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #242940;
+    }
+
+    .brand {
+      color: #a78bfa;
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: 4px;
+    }
+
+    .status {
+      color: #65fbd2;
+      font-size: 11px;
+      letter-spacing: 2px;
+    }
+
+    main {
+      width: min(900px, 92%);
+      margin: 55px auto;
+    }
+
+    .hero { text-align: center; margin-bottom: 36px; }
+
+    .core {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 24px;
+      border-radius: 50%;
+      border: 1px solid #a78bfa;
+      box-shadow: 0 0 25px #8b5cf655, inset 0 0 24px #8b5cf633;
+      display: grid;
+      place-items: center;
+      color: #c4b5fd;
+      font-size: 38px;
+      animation: pulse 3s infinite;
+    }
+
+    @keyframes pulse {
+      50% { box-shadow: 0 0 42px #8b5cf688, inset 0 0 28px #8b5cf655; }
+    }
+
+    h1 { font-size: clamp(30px, 6vw, 48px); letter-spacing: 7px; margin: 0; }
+    .subtitle { color: #929ab6; font-size: 12px; letter-spacing: 3px; margin-top: 12px; }
+
+    .panel {
+      background: #0d1120;
+      border: 1px solid #252b45;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 18px 22px;
+      border-bottom: 1px solid #252b45;
+      color: #b7a0ff;
+      font-size: 12px;
+      letter-spacing: 2px;
+    }
+
+    #messages {
+      padding: 22px;
+      min-height: 220px;
+      max-height: 360px;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin: 0 0 16px;
+      padding: 13px 15px;
+      border-radius: 10px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .archon { background: #151a2d; border-left: 2px solid #a78bfa; }
+    .user { background: #20203c; border-left: 2px solid #65d9ff; }
+    .label { display: block; font-size: 10px; color: #a78bfa; margin-bottom: 5px; letter-spacing: 2px; }
+
+    .input-area { display: flex; gap: 10px; padding: 16px; border-top: 1px solid #252b45; }
+    input {
+      flex: 1; min-width: 0; padding: 14px;
+      background: #080b15; color: white;
+      border: 1px solid #303752; border-radius: 9px; outline: none;
+    }
+
+    input:focus { border-color: #a78bfa; }
+
+    button {
+      padding: 12px 17px; border: 0; border-radius: 9px;
+      background: #a78bfa; color: #090910;
+      font-weight: 800; cursor: pointer;
+    }
+
+    button:hover { background: #c4b5fd; }
+    button:disabled { opacity: .5; cursor: wait; }
+
+    .foot { text-align: center; color: #626b88; font-size: 11px; margin-top: 24px; letter-spacing: 2px; }
+
+    @media (max-width: 500px) {
+      header { padding: 18px 5%; }
+      .brand { font-size: 16px; letter-spacing: 2px; }
+      main { margin-top: 38px; }
+      .input-area { flex-wrap: wrap; }
+      .input-area input { flex-basis: 100%; }
+      .input-area button { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">A.R.C.H.O.N.</div>
+    <div class="status">● SYSTEM ONLINE</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="core">A</div>
+      <h1>ARCHON</h1>
+      <div class="subtitle">PERSONAL INTELLIGENCE INTERFACE</div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">TERMINAL // 001</div>
+      <div id="messages" aria-live="polite">
+        <div class="message archon">
+          <span class="label">A.R.C.H.O.N.</span>
+          Interface initialized. My AI connection is not configured yet.
+          <br><br>
+          Awaiting your first command, operator.
+        </div>
+      </div>
+      <form class="input-area" id="chatForm">
+        <input id="userInput" placeholder="Enter a command..." autocomplete="off" required>
+        <button id="sendBtn" type="submit">SEND ↗</button>
+      </form>
+    </section>
+
+    <div class="foot">ARCHON // INTERFACE PROTOTYPE</div>
+  </main>
+
+  <script>
+    const form = document.getElementById("chatForm");
+    const input = document.getElementById("userInput");
+    const messages = document.getElementById("messages");
+    const sendBtn = document.getElementById("sendBtn");
+
+    function addMessage(who, text) {
+      const box = document.createElement("div");
+      box.className = "message " + who;
+
+      const label = document.createElement("span");
+      label.className = "label";
+      label.textContent = who === "user" ? "OPERATOR" : "A.R.C.H.O.N.";
+
+      const content = document.createElement("span");
+      content.textContent = text;
+
+      box.append(label, content);
+      messages.appendChild(box);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMessage("user", text);
+      input.value = "";
+      addMessage("archon", "Interface received your command. AI brain connection pending.");
+
+      messages.scrollTop = messages.scrollHeight;
+    });
+  </script>
+</body>
+</html>
