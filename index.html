@@ -4,195 +4,596 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A.R.C.H.O.N. | AI System</title>
+  <meta name="theme-color" content="#090711">
+  <meta name="description" content="ARCHON — Your personal AI assistant.">
+  <title>ARCHON — AI Assistant</title>
+
   <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090711;
+      --panel: #100e1b;
+      --panel2: #171326;
+      --purple: #a78bfa;
+      --bright: #c4b5fd;
+      --muted: #938da9;
+      --border: rgba(196, 181, 253, .13);
+      --text: #f5f3ff;
+    }
+
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
       min-height: 100vh;
-      background: #070910;
-      color: #e8ecff;
-      font-family: "Segoe UI", sans-serif;
+      background:
+        radial-gradient(ellipse at 50% -15%, #30205a 0%, transparent 48%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    .app {
+      width: min(100%, 1000px);
+      min-height: 100vh;
+      margin: auto;
+      padding: 22px 22px 24px;
+      display: flex;
+      flex-direction: column;
     }
 
     header {
-      padding: 22px 7%;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #242940;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
     }
 
     .brand {
-      color: #a78bfa;
-      font-size: 21px;
-      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 43px;
+      height: 43px;
+      border: 1px solid #8b5cf6;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: var(--bright);
+      background: linear-gradient(145deg, #302052, #100c1e);
+      box-shadow: 0 0 28px #8b5cf625;
+      font-size: 23px;
+    }
+
+    .brand h1 {
+      font-size: 19px;
       letter-spacing: 4px;
+      margin: 0;
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 1.7px;
     }
 
     .status {
-      color: #65fbd2;
-      font-size: 11px;
-      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #bcb4d0;
+      font-size: 12px;
     }
 
-    main {
-      width: min(900px, 92%);
-      margin: 55px auto;
-    }
-
-    .hero { text-align: center; margin-bottom: 36px; }
-
-    .core {
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 24px;
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: #a78bfa;
       border-radius: 50%;
-      border: 1px solid #a78bfa;
-      box-shadow: 0 0 25px #8b5cf655, inset 0 0 24px #8b5cf633;
-      display: grid;
-      place-items: center;
-      color: #c4b5fd;
-      font-size: 38px;
-      animation: pulse 3s infinite;
+      box-shadow: 0 0 12px #a78bfa;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 34px 0 24px;
+    }
+
+    .orb {
+      position: relative;
+      width: 118px;
+      height: 118px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 28%, #f5eaff 0%, #c4b5fd 5%,
+        #8b5cf6 18%, #4c1d95 43%, #140b2a 69%, #090711 75%);
+      box-shadow: 0 0 35px #8b5cf64d, 0 0 90px #7c3aed24;
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    .orb::before, .orb::after {
+      content: "";
+      position: absolute;
+      inset: -9px;
+      border: 1px solid #a78bfa50;
+      border-radius: 50%;
+      transform: rotateX(65deg);
+    }
+
+    .orb::after {
+      inset: -16px;
+      transform: rotateY(65deg);
+      border-color: #8b5cf630;
     }
 
     @keyframes pulse {
-      50% { box-shadow: 0 0 42px #8b5cf688, inset 0 0 28px #8b5cf655; }
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.045); }
     }
 
-    h1 { font-size: clamp(30px, 6vw, 48px); letter-spacing: 7px; margin: 0; }
-    .subtitle { color: #929ab6; font-size: 12px; letter-spacing: 3px; margin-top: 12px; }
+    .hero h2 {
+      margin: 0;
+      font-size: clamp(25px, 5vw, 35px);
+      letter-spacing: 1px;
+    }
 
-    .panel {
-      background: #0d1120;
-      border: 1px solid #252b45;
-      border-radius: 16px;
+    .hero p {
+      color: var(--muted);
+      margin: 10px auto 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .tools {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin: 0 0 24px;
+    }
+
+    .tool {
+      min-height: 84px;
+      padding: 14px;
+      text-align: left;
+      color: var(--text);
+      background: linear-gradient(145deg, #171326, #100e1b);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      transition: .2s ease;
+    }
+
+    .tool:hover {
+      border-color: #a78bfa75;
+      background: #1c1630;
+      transform: translateY(-2px);
+    }
+
+    .tool .emoji {
+      display: block;
+      font-size: 21px;
+      margin-bottom: 9px;
+    }
+
+    .tool strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .tool small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .chat {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 260px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
       overflow: hidden;
+      background: #0e0c17d9;
     }
 
-    .panel-head {
-      padding: 18px 22px;
-      border-bottom: 1px solid #252b45;
-      color: #b7a0ff;
+    .chat-heading {
+      padding: 15px 17px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
       font-size: 12px;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
     }
+
+    .clear-btn {
+      color: var(--muted);
+      border: 0;
+      background: transparent;
+      font-size: 12px;
+    }
+
+    .clear-btn:hover { color: var(--bright); }
 
     #messages {
-      padding: 22px;
-      min-height: 220px;
-      max-height: 360px;
-      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 18px;
+      flex: 1;
     }
 
+    .welcome {
+      text-align: center;
+      padding: 26px 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .welcome strong { color: var(--bright); }
+
     .message {
-      margin: 0 0 16px;
-      padding: 13px 15px;
-      border-radius: 10px;
-      line-height: 1.6;
+      max-width: 88%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-self: flex-start;
+    }
+
+    .message.user { align-self: flex-end; }
+
+    .message .label {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    .bubble {
+      padding: 12px 14px;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 5px 15px 15px 15px;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
       white-space: pre-wrap;
     }
 
-    .archon { background: #151a2d; border-left: 2px solid #a78bfa; }
-    .user { background: #20203c; border-left: 2px solid #65d9ff; }
-    .label { display: block; font-size: 10px; color: #a78bfa; margin-bottom: 5px; letter-spacing: 2px; }
-
-    .input-area { display: flex; gap: 10px; padding: 16px; border-top: 1px solid #252b45; }
-    input {
-      flex: 1; min-width: 0; padding: 14px;
-      background: #080b15; color: white;
-      border: 1px solid #303752; border-radius: 9px; outline: none;
+    .user .bubble {
+      background: #322052;
+      border-color: #a78bfa35;
+      border-radius: 15px 5px 15px 15px;
     }
 
-    input:focus { border-color: #a78bfa; }
+    .bubble a { color: var(--bright); }
 
-    button {
-      padding: 12px 17px; border: 0; border-radius: 9px;
-      background: #a78bfa; color: #090910;
-      font-weight: 800; cursor: pointer;
+    .typing { color: var(--muted); font-size: 13px; }
+
+    .composer {
+      padding: 13px;
+      border-top: 1px solid var(--border);
     }
 
-    button:hover { background: #c4b5fd; }
-    button:disabled { opacity: .5; cursor: wait; }
+    .input-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      padding: 8px;
+      background: #090711;
+      border: 1px solid #a78bfa30;
+      border-radius: 14px;
+    }
 
-    .foot { text-align: center; color: #626b88; font-size: 11px; margin-top: 24px; letter-spacing: 2px; }
+    .input-wrap:focus-within {
+      border-color: #a78bfa85;
+      box-shadow: 0 0 0 3px #8b5cf612;
+    }
 
-    @media (max-width: 500px) {
-      header { padding: 18px 5%; }
-      .brand { font-size: 16px; letter-spacing: 2px; }
-      main { margin-top: 38px; }
-      .input-area { flex-wrap: wrap; }
-      .input-area input { flex-basis: 100%; }
-      .input-area button { flex: 1; }
+    #prompt {
+      flex: 1;
+      min-width: 0;
+      max-height: 150px;
+      resize: vertical;
+      padding: 9px 8px;
+      color: var(--text);
+      background: transparent;
+      border: 0;
+      outline: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    #prompt::placeholder { color: #716a85; }
+
+    #send {
+      min-width: 43px;
+      height: 43px;
+      border: 0;
+      border-radius: 11px;
+      color: white;
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+      box-shadow: 0 4px 18px #7c3aed30;
+      font-size: 19px;
+    }
+
+    #send:disabled { opacity: .45; cursor: wait; }
+
+    .hint {
+      padding: 9px 2px 0;
+      text-align: center;
+      color: #777087;
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    footer {
+      padding-top: 18px;
+      text-align: center;
+      color: #716a85;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+    }
+
+    @media (max-width: 560px) {
+      .app { padding: 16px 13px 20px; }
+      .brand h1 { font-size: 16px; letter-spacing: 3px; }
+      .brand-icon { width: 38px; height: 38px; }
+      .status { font-size: 10px; }
+      .hero { padding: 30px 0 23px; }
+      .orb { width: 96px; height: 96px; }
+      .tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .tool { min-height: 78px; padding: 12px; }
+      .message { max-width: 95%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
     }
   </style>
 </head>
+
 <body>
-  <header>
-    <div class="brand">A.R.C.H.O.N.</div>
-    <div class="status">● SYSTEM ONLINE</div>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="core">A</div>
-      <h1>ARCHON</h1>
-      <div class="subtitle">PERSONAL INTELLIGENCE INTERFACE</div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-head">TERMINAL // 001</div>
-      <div id="messages" aria-live="polite">
-        <div class="message archon">
-          <span class="label">A.R.C.H.O.N.</span>
-          Interface initialized. My AI connection is not configured yet.
-          <br><br>
-          Awaiting your first command, operator.
+  <main class="app">
+    <header>
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">◈</div>
+        <div>
+          <h1>ARCHON</h1>
+          <div class="subtitle">REASONING • CREATIVITY • ASSISTANCE</div>
         </div>
       </div>
-      <form class="input-area" id="chatForm">
-        <input id="userInput" placeholder="Enter a command..." autocomplete="off" required>
-        <button id="sendBtn" type="submit">SEND ↗</button>
+      <div class="status">
+        <span class="dot"></span>
+        <span id="statusText">AI SYSTEM</span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="orb" aria-hidden="true"></div>
+      <h2>Your intelligence. Amplified.</h2>
+      <p>
+        Adaptive Reasoning Core for Heuristic Operations and Navigation.<br>
+        What shall we work on today?
+      </p>
+    </section>
+
+    <section class="tools" aria-label="Quick actions">
+      <button class="tool" data-prompt="Help me understand a difficult school topic. Explain it simply, with examples, and then give me a few practice questions.">
+        <span class="emoji">📚</span>
+        <strong>Study Assistant</strong>
+        <small>Learn concepts clearly</small>
+      </button>
+
+      <button class="tool" data-prompt="Help me make a practical plan for today. Ask me what tasks I need to complete if necessary, then organize them by priority.">
+        <span class="emoji">◷</span>
+        <strong>Daily Planner</strong>
+        <small>Organize your day</small>
+      </button>
+
+      <button class="tool" data-prompt="Help me write something clear, natural, and well-organized. Ask what kind of writing I need if it's not clear.">
+        <span class="emoji">✎</span>
+        <strong>Writing Studio</strong>
+        <small>Write and improve text</small>
+      </button>
+
+      <button class="tool" data-prompt="Let's brainstorm creative ideas. Give me several original options and explain briefly what makes each one interesting.">
+        <span class="emoji">✧</span>
+        <strong>Idea Generator</strong>
+        <small>Explore new possibilities</small>
+      </button>
+
+      <button class="tool" data-prompt="Help me create a checklist for my tasks. Ask me what I'm trying to accomplish if needed, then make the checklist actionable.">
+        <span class="emoji">☑</span>
+        <strong>Smart Checklist</strong>
+        <small>Turn goals into steps</small>
+      </button>
+
+      <button class="tool" data-prompt="Act as a patient tutor. Help me solve a problem step by step, explaining the reasoning clearly rather than just giving the result.">
+        <span class="emoji">⌘</span>
+        <strong>Problem Solver</strong>
+        <small>Break down challenges</small>
+      </button>
+    </section>
+
+    <section class="chat" aria-label="ARCHON chat">
+      <div class="chat-heading">
+        <span>◈ &nbsp; CONVERSATION</span>
+        <button class="clear-btn" id="clearChat">Clear chat ↺</button>
+      </div>
+
+      <div id="messages" aria-live="polite">
+        <div class="welcome" id="welcome">
+          <strong>ARCHON is ready for your ideas.</strong><br>
+          Type a message below or choose a tool above to begin.
+        </div>
+      </div>
+
+      <form class="composer" id="chatForm">
+        <div class="input-wrap">
+          <textarea id="prompt" rows="1" maxlength="4000"
+            placeholder="Message ARCHON..." aria-label="Your message"></textarea>
+          <button id="send" type="submit" aria-label="Send message">↑</button>
+        </div>
+        <div class="hint">ENTER TO SEND · SHIFT + ENTER FOR A NEW LINE</div>
       </form>
     </section>
 
-    <div class="foot">ARCHON // INTERFACE PROTOTYPE</div>
+    <footer>A.R.C.H.O.N. &nbsp; / &nbsp; YOUR PERSONAL AI ASSISTANT</footer>
   </main>
 
   <script>
+    // Your Render backend. Never place your Groq API key in this file.
+    const API_URL = "https://archon-ai-backend.onrender.com/api/chat";
+
     const form = document.getElementById("chatForm");
-    const input = document.getElementById("userInput");
-    const messages = document.getElementById("messages");
-    const sendBtn = document.getElementById("sendBtn");
+    const promptInput = document.getElementById("prompt");
+    const sendButton = document.getElementById("send");
+    const messagesElement = document.getElementById("messages");
+    const statusText = document.getElementById("statusText");
+    const welcome = document.getElementById("welcome");
 
-    function addMessage(who, text) {
-      const box = document.createElement("div");
-      box.className = "message " + who;
+    let history = [];
+    let busy = false;
 
-      const label = document.createElement("span");
-      label.className = "label";
-      label.textContent = who === "user" ? "OPERATOR" : "A.R.C.H.O.N.";
-
-      const content = document.createElement("span");
-      content.textContent = text;
-
-      box.append(label, content);
-      messages.appendChild(box);
-      messages.scrollTop = messages.scrollHeight;
+    function scrollToBottom() {
+      messagesElement.scrollTop = messagesElement.scrollHeight;
     }
 
-    form.addEventListener("submit", function(event) {
+    function addMessage(role, content, extraClass = "") {
+      if (welcome.isConnected) welcome.remove();
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "message " + (role === "user" ? "user " : "assistant ") + extraClass;
+
+      const label = document.createElement("div");
+      label.className = "label";
+      label.textContent = role === "user" ? "YOU" : "ARCHON";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = content;
+
+      wrapper.append(label, bubble);
+      messagesElement.appendChild(wrapper);
+      scrollToBottom();
+      return wrapper;
+    }
+
+    function setBusy(value) {
+      busy = value;
+      sendButton.disabled = value;
+      promptInput.disabled = value;
+      statusText.textContent = value ? "THINKING..." : "AI SYSTEM";
+      sendButton.textContent = value ? "…" : "↑";
+    }
+
+    async function sendMessage(text) {
+      const message = text.trim();
+      if (!message || busy) return;
+
+      addMessage("user", message);
+      history.push({ role: "user", content: message });
+      promptInput.value = "";
+      promptInput.style.height = "auto";
+      setBusy(true);
+
+      const typing = addMessage("assistant", "Connecting to the AI brain...", "typing");
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: history.slice(-12) })
+        });
+
+        let data;
+        try {
+          data = await response.json();
+        } catch {
+          throw new Error("The backend returned an unreadable response.");
+        }
+
+        if (!response.ok) {
+          if (response.status === 429) {
+            throw new Error("Too many requests. Please wait a little and try again.");
+          }
+          throw new Error(data.error || "The AI backend returned an error (HTTP " + response.status + ").");
+        }
+
+        if (typeof data.reply !== "string" || !data.reply.trim()) {
+          throw new Error("The AI returned an empty reply. Please try again.");
+        }
+
+        typing.remove();
+        addMessage("assistant", data.reply);
+        history.push({ role: "assistant", content: data.reply });
+
+        // Keep the local conversation bounded.
+        history = history.slice(-12);
+      } catch (error) {
+        typing.remove();
+
+        let explanation = error.message || "An unknown connection error occurred.";
+
+        if (error instanceof TypeError) {
+          explanation =
+            "Couldn't reach the backend. It may be waking up, or its CORS settings may need fixing. Wait 30–60 seconds and try again.";
+        }
+
+        addMessage("assistant", "Connection issue: " + explanation);
+        statusText.textContent = "CONNECTION ISSUE";
+      } finally {
+        setBusy(false);
+        promptInput.focus();
+      }
+    }
+
+    form.addEventListener("submit", event => {
       event.preventDefault();
-      const text = input.value.trim();
-      if (!text) return;
+      sendMessage(promptInput.value);
+    });
 
-      addMessage("user", text);
-      input.value = "";
-      addMessage("archon", "Interface received your command. AI brain connection pending.");
+    promptInput.addEventListener("keydown", event => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        form.requestSubmit();
+      }
+    });
 
-      messages.scrollTop = messages.scrollHeight;
+    promptInput.addEventListener("input", () => {
+      promptInput.style.height = "auto";
+      promptInput.style.height = Math.min(promptInput.scrollHeight, 150) + "px";
+    });
+
+    document.querySelectorAll(".tool").forEach(button => {
+      button.addEventListener("click", () => {
+        sendMessage(button.dataset.prompt);
+      });
+    });
+
+    document.getElementById("clearChat").addEventListener("click", () => {
+      if (busy) return;
+      history = [];
+      messagesElement.replaceChildren(welcome);
+      messagesElement.scrollTop = 0;
+      statusText.textContent = "AI SYSTEM";
     });
   </script>
 </body>
